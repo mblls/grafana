@@ -114,6 +114,16 @@ func NewManager(cfg ManagerCfg, statePersister StatePersister) *Manager {
 	return m
 }
 
+// SetPersister updates the persister used for async state syncs.
+func (st *Manager) SetPersister(statePersister StatePersister) {
+	st.persister = statePersister
+}
+
+// ClearCache clears cached state without changing the persister.
+func (st *Manager) ClearCache() {
+	st.cache.reset()
+}
+
 func (st *Manager) Run(ctx context.Context) error {
 	st.persister.Async(ctx, st.cache)
 	return nil
